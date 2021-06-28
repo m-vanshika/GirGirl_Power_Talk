@@ -6,11 +6,16 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkCapabilities;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -121,8 +126,28 @@ public class userpage extends AppCompatActivity {
 
         }
     }
+   /* public int getWifiLevel()
+    {
+        WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        int linkSpeed = wifiManager.getConnectionInfo().getRssi();
+        int level = WifiManager.calculateSignalLevel(linkSpeed, 5);
+        return level;
+    }*/
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
     public void submit(View view)
     {
+boolean t=isOnline();
+      //  Toast.makeText(userpage.this,""+t,Toast.LENGTH_LONG).show();
+if(false==t)
+{
+    Toast.makeText(userpage.this,"NETWORK FAILURE",Toast.LENGTH_LONG).show();
+    return;
+}
         String strings[] = new String[allEds.size()];
 
         for(int i=0; i < allEds.size(); i++){
@@ -140,6 +165,46 @@ public class userpage extends AppCompatActivity {
                     assert documentSnapshot != null;
                     rn =(documentSnapshot.getLong("number").intValue());
                     // Log.v("number", String.valueOf(rn));
+                    rn++;
+                    Map<String, Object> data = new HashMap<>();
+                    data.put("number", rn);
+                    documentReference.set(data, SetOptions.merge());
+                    //added response number to user
+                    firebaseAuth=FirebaseAuth.getInstance();
+                    uid= Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
+                    documentReference2=fStore.collection("users").document(uid);
+                    readData(new FirestoreCallback() {
+                        @Override
+                        public void onCallback(List<String> list) {
+                            name=list.get(0);
+                            email=list.get(1);
+                            ph=list.get(2);
+                            DocumentReference documentReference3=fStore.collection("questions").document("Responses").collection("Answers").document("r"+rn);
+                            Map<String,Object> user=new HashMap<>();
+                            user.put("NAME",name);
+                            user.put("EMAIL",email);
+                            user.put("PHONE NUMBER",ph);
+                            for(int i=0; i < allEds.size(); i++){
+                                user.put("a"+(i+1),strings[i]);
+                                user.put("q"+(i+1),ques.get(i));
+                            }
+
+                            user.put("progress",1);
+                            user.put("total",allEds.size());
+
+                            documentReference3.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Toast.makeText(userpage.this,"SUBMISSION DONE",Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        }
+                    });
+                    Map<String, Object> data2 = new HashMap<>();
+                    data2.put("response no", rn);
+                    documentReference2.set(data2, SetOptions.merge());
+                    startActivity(new Intent(getApplicationContext(),Progress.class));
+                    finish();
                 }
                 else
                 {
@@ -149,48 +214,6 @@ public class userpage extends AppCompatActivity {
 
             }
         });
-        rn++;
-        Map<String, Object> data = new HashMap<>();
-        data.put("number", rn);
-        documentReference.set(data, SetOptions.merge());
-        //added response number to user
-        firebaseAuth=FirebaseAuth.getInstance();
-        uid= Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
-        documentReference2=fStore.collection("users").document(uid);
-        readData(new FirestoreCallback() {
-            @Override
-            public void onCallback(List<String> list) {
-                name=list.get(0);
-                email=list.get(1);
-                ph=list.get(2);
-                DocumentReference documentReference3=fStore.collection("questions").document("Responses").collection("Answers").document("r"+rn);
-                Map<String,Object> user=new HashMap<>();
-                user.put("NAME",name);
-                user.put("EMAIL",email);
-                user.put("PHONE NUMBER",ph);
-                for(int i=0; i < allEds.size(); i++){
-                    user.put("a"+(i+1),strings[i]);
-                    user.put("q"+(i+1),ques.get(i));
-                }
-
-                user.put("progress",1);
-                user.put("total",allEds.size());
-
-                documentReference3.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(userpage.this,"SUBMISSION DONE",Toast.LENGTH_LONG).show();
-                    }
-                });
-            }
-        });
-        Map<String, Object> data2 = new HashMap<>();
-        data2.put("response no", rn);
-        documentReference2.set(data2, SetOptions.merge());
-        //put data in new collection response
-
-        startActivity(new Intent(getApplicationContext(),Progress.class));
-        finish();
 
 
 

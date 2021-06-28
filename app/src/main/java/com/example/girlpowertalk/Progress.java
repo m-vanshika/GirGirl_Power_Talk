@@ -14,6 +14,8 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
@@ -35,11 +37,14 @@ public class Progress extends AppCompatActivity {
     FirebaseAuth fAuth,firebaseAuth;
     static FirebaseFirestore fStore;
     String uid;TextView t;
+    ProgressBar progressBar;
     private static  int n=0,p=1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_progress);
+        progressBar=findViewById(R.id.progressBar4);
+        progressBar.setVisibility(View.VISIBLE);
         t=(TextView)findViewById(R.id.textView15);
         fAuth= FirebaseAuth.getInstance();
         fStore= FirebaseFirestore.getInstance();
@@ -70,13 +75,14 @@ public class Progress extends AppCompatActivity {
                                 else if(p==4)
                                     t.setText("REJECTED");
                             }
+                            progressBar.setVisibility(View.GONE);
 
                             // Log.d("jaa","c");
                         }
                         else
                         {
                             Toast.makeText(Progress.this,task.getException().getMessage(),Toast.LENGTH_LONG);
-
+progressBar.setVisibility(View.GONE);
                         }
                     }
                 });
