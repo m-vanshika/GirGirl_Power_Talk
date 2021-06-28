@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "566809172919",
+    "project_id": "girl-power-talk",
+    "storage_bucket": "girl-power-talk.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:566809172919:android:aea9e62c0b1d3a9b632632",
+        "android_client_info": {
+          "package_name": "com.example.girlpowertalk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "566809172919-ho491jjh6gq76uihl68476gvg2ckjnj9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALFAEPdwAsEngYahVgAgOSy04hWJjS_vU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "566809172919-ho491jjh6gq76uihl68476gvg2ckjnj9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
