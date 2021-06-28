@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
@@ -36,6 +37,7 @@ public class Hompage extends AppCompatActivity {
     FirebaseFirestore fStore;
     String uid;
     private int n,p;
+    ProgressBar progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,8 @@ public class Hompage extends AppCompatActivity {
         setContentView(R.layout.activity_hompage);
         Button button=(Button)findViewById(R.id.applynow);
         fAuth=FirebaseAuth.getInstance();
+        progress=findViewById(R.id.progressBar2);
+        progress.setVisibility(View.VISIBLE);
         fStore=FirebaseFirestore.getInstance();
         uid=fAuth.getCurrentUser().getUid();
        /* ActionBar actionBar;
@@ -79,12 +83,13 @@ public class Hompage extends AppCompatActivity {
                         else
                             button.setText("SEE PROGRESS");
                     }
-
+progress.setVisibility(View.INVISIBLE);
                 }
                 else
                 {
                     Toast.makeText(Hompage.this,task.getException().getMessage(),Toast.LENGTH_LONG);
                     button.setText("APPLY NOW");
+                    progress.setVisibility(View.GONE);
                 }
             }
         });
