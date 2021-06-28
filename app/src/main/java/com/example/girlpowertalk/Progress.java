@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,45 +35,54 @@ public class Progress extends AppCompatActivity {
     FirebaseAuth fAuth,firebaseAuth;
     static FirebaseFirestore fStore;
     String uid;TextView t;
-    private static  int n,p;
+    private static  int n=0,p=1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_progress);
         t=(TextView)findViewById(R.id.textView15);
         fAuth= FirebaseAuth.getInstance();
-
         fStore= FirebaseFirestore.getInstance();
         uid=fAuth.getCurrentUser().getUid();
         final DocumentReference documentReference=fStore.collection("users").document(uid);
-        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
-                    DocumentSnapshot documentSnapshot=task.getResult();
-                    assert documentSnapshot != null;
-                    n=(documentSnapshot.getLong("response no").intValue());
-                    getstatus(n);
-                    //Log.d("hey n","f"+n);
-                    p=(documentSnapshot.getLong("status").intValue());
-                    if(n!=0) {
-                        if (p == 1)
-                            t.setText("APPLICATION SUBMITTED");
-                        else if(p==2)
-                            t.setText("APPLICATION UNDER EVALUATION");
-                        else if(p==3)
-                            t.setText("SHORTLISTED FOR INTERVIEW");
-                        else if(p==4)
-                            t.setText("REJECTED");
-                    }
-                }
-                else
-                {
-                    Toast.makeText(Progress.this,task.getException().getMessage(),Toast.LENGTH_LONG);
+        final Handler h = new Handler();
+        h.postDelayed(new Runnable(){
 
-                }
+            @Override
+            public void run() {
+                documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()){
+                            DocumentSnapshot documentSnapshot=task.getResult();
+                            assert documentSnapshot != null;
+                            n=(documentSnapshot.getLong("response no").intValue());
+                            getstatus(n);
+                            //Log.d("hey n","f"+n);
+                            p=(documentSnapshot.getLong("status").intValue());
+                            if(n!=0) {
+                                if (p == 1)
+                                    t.setText("APPLICATION SUBMITTED");
+                                else if(p==2)
+                                    t.setText("APPLICATION UNDER EVALUATION");
+                                else if(p==3)
+                                    t.setText("SHORTLISTED FOR INTERVIEW");
+                                else if(p==4)
+                                    t.setText("REJECTED");
+                            }
+
+                            // Log.d("jaa","c");
+                        }
+                        else
+                        {
+                            Toast.makeText(Progress.this,task.getException().getMessage(),Toast.LENGTH_LONG);
+
+                        }
+                    }
+                });
             }
-        });
+        },1000);
+
     }
     int getstatus(int n)
     {
@@ -110,6 +120,8 @@ public class Progress extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+       //
+        // Log.d("jaa","d");
         final DocumentReference documentReference=fStore.collection("users").document(uid);
         documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
