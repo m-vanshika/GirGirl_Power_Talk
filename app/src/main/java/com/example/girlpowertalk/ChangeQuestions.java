@@ -6,21 +6,27 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -30,16 +36,17 @@ import java.util.Map;
 
 public class ChangeQuestions extends AppCompatActivity {
     FirebaseFirestore fStore;
+    FirebaseAuth fAuth;
     int n;
+
+
     TextView b;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_questions);
-        ActionBar actionBar;
-        actionBar = getSupportActionBar();
-        ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor("#cc0c0c"));
-        actionBar.setBackgroundDrawable(colorDrawable);
+
+
 
     }
     public void display(int n,DocumentSnapshot documentSnapshot)
@@ -158,6 +165,8 @@ public class ChangeQuestions extends AppCompatActivity {
                 }
             }
         });
+        if(MainActivity.flag==true)
+            finish();
     }
 
     public void getq(EditText w,int j)
@@ -297,4 +306,48 @@ public class ChangeQuestions extends AppCompatActivity {
         passres.create().show();
 
     }
+
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        Log.d("hey0","hey");
+        return true;
+    }
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        // Handle presses on the action bar items
+
+        fAuth= FirebaseAuth.getInstance();
+        fStore=FirebaseFirestore.getInstance();
+        switch (item.getItemId()) {
+
+            case R.id.logout:
+
+                AlertDialog.Builder l=new AlertDialog.Builder(ChangeQuestions.this);
+                l.setTitle("Logout!");
+                l.setMessage("Are you sure?");
+                l.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        FirebaseAuth.getInstance().signOut();
+                        MainActivity.flag=true;
+                        startActivity(new Intent(getApplicationContext(),Login.class));
+                        finish();
+
+                    }
+                });
+                l.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //exits
+                    }
+                });
+                l.create().show();
+
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 }

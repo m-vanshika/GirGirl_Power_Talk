@@ -6,12 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".Progress">
 
+
     <TextView
         android:id="@+id/textView14"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="92dp"
-        android:layout_marginEnd="4dp"
+        android:layout_marginTop="95dp"
         android:text="YOU HAVE FILLED THE FORM"
         android:textColor="@color/back"
         android:textSize="30sp"
@@ -20,22 +20,22 @@
 
     <TextView
         android:id="@+id/textView15"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="128dp"
+        android:layout_marginTop="81dp"
         android:foregroundGravity="center"
         android:gravity="center"
         android:textColor="@color/black"
         android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView14" />
+        app:layout_constraintTop_toBottomOf="@+id/textView16" />
 
     <TextView
         android:id="@+id/textView16"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="53dp"
         android:text="PROGRESS:"
         android:textColor="@color/back"
         android:textSize="30sp"

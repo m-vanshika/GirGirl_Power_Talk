@@ -2,14 +2,20 @@ package com.example.girlpowertalk;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -35,10 +41,6 @@ public class Progress extends AppCompatActivity {
         setContentView(R.layout.activity_progress);
         t=(TextView)findViewById(R.id.textView15);
         fAuth= FirebaseAuth.getInstance();
-        ActionBar actionBar;
-        actionBar = getSupportActionBar();
-        ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor("#cc0c0c"));
-        actionBar.setBackgroundDrawable(colorDrawable);
 
         fStore= FirebaseFirestore.getInstance();
         uid=fAuth.getCurrentUser().getUid();
@@ -137,6 +139,51 @@ public class Progress extends AppCompatActivity {
                 }
             }
         });
+        if(MainActivity.flag==true)
+            finish();
+    }
+
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        Log.d("hey0","hey");
+        return true;
+    }
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        // Handle presses on the action bar items
+
+        fAuth=FirebaseAuth.getInstance();
+        fStore=FirebaseFirestore.getInstance();
+        switch (item.getItemId()) {
+
+            case R.id.logout:
+
+                AlertDialog.Builder l=new AlertDialog.Builder(Progress.this);
+                l.setTitle("Logout!");
+                l.setMessage("Are you sure?");
+                l.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        FirebaseAuth.getInstance().signOut();
+MainActivity.flag=true;
+                        startActivity(new Intent(getApplicationContext(),Login.class));
+                        finish();
+
+                    }
+                });
+                l.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //exits
+                    }
+                });
+                l.create().show();
+
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 }
