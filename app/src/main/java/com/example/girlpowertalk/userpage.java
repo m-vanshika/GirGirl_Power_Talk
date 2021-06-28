@@ -3,8 +3,10 @@ package com.example.girlpowertalk;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -12,11 +14,14 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -36,7 +41,7 @@ import java.util.Objects;
 public class userpage extends AppCompatActivity {
 
     FirebaseFirestore fStore;
-    FirebaseAuth firebaseAuth;
+    FirebaseAuth firebaseAuth,fAuth;
     static int n,rn;
     static String uid,email,ph;
     public static String name="";
@@ -51,10 +56,6 @@ public class userpage extends AppCompatActivity {
         allEds= new ArrayList<EditText>();
         ques=new ArrayList<String>();
         det=new ArrayList<String>();
-        ActionBar actionBar;
-        actionBar = getSupportActionBar();
-        ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor("#cc0c0c"));
-        actionBar.setBackgroundDrawable(colorDrawable);LinearLayout ll=(LinearLayout)findViewById(R.id.ll) ;
         final DocumentReference documentReference=fStore.collection("questions").document("Details");
         documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
 
@@ -210,6 +211,56 @@ public class userpage extends AppCompatActivity {
 
     private interface FirestoreCallback{
         void onCallback(List<String> list);
+    }
+
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+       // Log.d("hey0","hey");
+        return true;
+    }
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        // Handle presses on the action bar items
+
+        fAuth=FirebaseAuth.getInstance();
+        fStore=FirebaseFirestore.getInstance();
+        switch (item.getItemId()) {
+
+            case R.id.logout:
+
+                AlertDialog.Builder l=new AlertDialog.Builder(userpage.this);
+                l.setTitle("Logout!");
+                l.setMessage("Are you sure?");
+                l.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        FirebaseAuth.getInstance().signOut();
+                        MainActivity.flag=true;
+                        startActivity(new Intent(getApplicationContext(),Login.class));
+                        finish();
+
+                    }
+                });
+                l.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //exits
+                    }
+                });
+                l.create().show();
+
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(MainActivity.flag==true)
+            finish();
     }
 }
 

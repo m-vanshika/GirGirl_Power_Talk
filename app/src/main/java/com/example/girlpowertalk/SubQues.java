@@ -2,18 +2,23 @@ package com.example.girlpowertalk;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -28,18 +33,15 @@ import java.util.Map;
 public class SubQues extends AppCompatActivity {
 
     FirebaseFirestore fStore;
-    FirebaseAuth firebaseAuth;
+    FirebaseAuth fAuth;
     public static int n;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sub_ques);
         // Log.d("hey","itni bar");
-        ActionBar actionBar;
-        actionBar = getSupportActionBar();
         fStore=FirebaseFirestore.getInstance();
-        ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor("#cc0c0c"));
-        actionBar.setBackgroundDrawable(colorDrawable);
+
         //number of responses
         final DocumentReference documentReference=fStore.collection("questions").document("Responses");
 
@@ -121,4 +123,53 @@ public class SubQues extends AppCompatActivity {
 
     }
 
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        Log.d("hey0","hey");
+        return true;
+    }
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        // Handle presses on the action bar items
+
+        fAuth=FirebaseAuth.getInstance();
+        fStore=FirebaseFirestore.getInstance();
+        switch (item.getItemId()) {
+
+            case R.id.logout:
+
+                AlertDialog.Builder l=new AlertDialog.Builder(SubQues.this);
+                l.setTitle("Logout!");
+                l.setMessage("Are you sure?");
+                l.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        FirebaseAuth.getInstance().signOut();
+                        MainActivity.flag=true;
+                        startActivity(new Intent(getApplicationContext(),Login.class));
+                        finish();
+
+                    }
+                });
+                l.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //exits
+                    }
+                });
+                l.create().show();
+
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(MainActivity.flag==true)
+            finish();
+    }
 }

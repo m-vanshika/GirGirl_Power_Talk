@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -74,6 +75,7 @@ public class Login extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
+                            MainActivity.flag=false;
                             Toast.makeText(Login.this,"WELCOME TO Girl Power Talk",Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(Login.this,Hompage.class));
                             finish();
