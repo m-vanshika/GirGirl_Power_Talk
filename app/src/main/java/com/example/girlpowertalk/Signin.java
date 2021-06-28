@@ -43,6 +43,7 @@ public class Signin extends AppCompatActivity {
         setContentView(R.layout.activity_signin);
         name=(EditText)findViewById(R.id.n);
         number=(EditText)findViewById(R.id.pn);
+        progressBar=findViewById(R.id.progressBar3);
         email = (EditText) findViewById(R.id.e);
         password = (EditText) findViewById(R.id.p);
         sign = (Button) findViewById(R.id.signup);
@@ -56,6 +57,7 @@ public class Signin extends AppCompatActivity {
         sign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 final String e,p,n,pn,h,r;
                 e=email.getText().toString().trim();
                 p=password.getText().toString().trim();
@@ -89,6 +91,7 @@ public class Signin extends AppCompatActivity {
                     number.setError("Enter a valid number");
                     return;
                 }
+                progressBar.setVisibility(View.VISIBLE);
                 firestore=FirebaseFirestore.getInstance();
                 firebaseAuth.createUserWithEmailAndPassword(e,p).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -96,7 +99,7 @@ public class Signin extends AppCompatActivity {
                         if(task.isSuccessful())
                         {
                             FirebaseUser fuser=firebaseAuth.getCurrentUser();
-                            Toast.makeText(Signin.this,"NOW LOGIN",Toast.LENGTH_SHORT).show();
+                          ///  Toast.makeText(Signin.this,"NOW LOGIN",Toast.LENGTH_SHORT).show();
                             userId=firebaseAuth.getCurrentUser().getUid();
                             DocumentReference documentReference=firestore.collection("users").document(userId);
                             Map<String,Object> user=new HashMap<>();
@@ -110,16 +113,19 @@ public class Signin extends AppCompatActivity {
                             documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
+                                    Toast.makeText(Signin.this,"DETAILS SAVED",Toast.LENGTH_LONG).show();
 
+                                    FirebaseAuth.getInstance().signOut();
                                 }
                             });
-
+                            progressBar.setVisibility(View.GONE);
                             startActivity(new Intent(getApplicationContext(),Login.class));
                             finish();
 
 
                         }
                         else{
+                            progressBar.setVisibility(View.GONE);
                             Toast.makeText(Signin.this,"ERROR:"+task.getException().getMessage(),Toast.LENGTH_SHORT).show();
 
                         }

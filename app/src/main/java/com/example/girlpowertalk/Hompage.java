@@ -37,13 +37,14 @@ public class Hompage extends AppCompatActivity {
     FirebaseFirestore fStore;
     String uid;
     private int n,p;
+    Button button;
     ProgressBar progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hompage);
-        Button button=(Button)findViewById(R.id.applynow);
+        button=(Button)findViewById(R.id.applynow);
         fAuth=FirebaseAuth.getInstance();
         progress=findViewById(R.id.progressBar2);
         progress.setVisibility(View.VISIBLE);
@@ -83,7 +84,7 @@ public class Hompage extends AppCompatActivity {
                         else
                             button.setText("SEE PROGRESS");
                     }
-progress.setVisibility(View.INVISIBLE);
+                    progress.setVisibility(View.INVISIBLE);
                 }
                 else
                 {
@@ -118,7 +119,7 @@ progress.setVisibility(View.INVISIBLE);
 
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
-        Log.d("hey0","hey");
+        //Log.d("hey0","hey");
         return true;
     }
     public boolean onOptionsItemSelected(final MenuItem item) {
@@ -163,5 +164,44 @@ progress.setVisibility(View.INVISIBLE);
         super.onResume();
         if(MainActivity.flag==true)
             finish();
+        final DocumentReference documentReference=fStore.collection("users").document(uid);
+        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    DocumentSnapshot documentSnapshot=task.getResult();
+                    assert documentSnapshot != null;
+                    n=(documentSnapshot.getLong("ADMIN").intValue());
+
+                    if(n==1) {
+                        button.setText("ADMIN LOGIN");
+                        TextView t=findViewById(R.id.t);
+                        t.setText("ADMIN PAGE");
+                        TextView t1=findViewById(R.id.textView10);
+                        t1.setText("This is the page for login of admins\n\n");
+
+                    }
+                    else {
+                        p=(documentSnapshot.getLong("response no").intValue());
+                        TextView t=findViewById(R.id.t);
+                        t.setText("ABOUT US");
+                        TextView t1=findViewById(R.id.textView10);
+                        t1.setText("Girl Power Talk strives to inspire girls with persistence, empathy, and confidence. We empower young Women, Men & Non-Binary with merit-based opportunities to grow and achieve their full potential. Our mission, in collaboration with our sister company Blue Ocean Global Technology, is to develop girls in India to become global leaders. We are relentlessly committed to education, gender equality, and integrating the strengths of specially abled communities. We celebrate the diverse talents of each individual. \n Through our nurturing culture of learning and mentorship, we instill young people with exceptional soft-skills, technical knowledge, and purpose in life. We provide a platform to share the voices and stories of girls and women across India. #GirlPowerTalk \n “One girl empowers another. Let’s change lives together: one girl, one woman and one human being at a time.” \n \n -Rachita Sharma \n Co-Founder, Girl Power Talk \n Chief Marketing Officer, Blue Ocean Global Technology \n");
+
+                        if (p == 0)
+                            button.setText("APPLY NOW");
+                        else
+                            button.setText("SEE PROGRESS");
+                    }
+                    progress.setVisibility(View.INVISIBLE);
+                }
+                else
+                {
+                    Toast.makeText(Hompage.this,task.getException().getMessage(),Toast.LENGTH_LONG);
+                    button.setText("APPLY NOW");
+                    progress.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 }

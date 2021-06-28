@@ -10,15 +10,15 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="72dp"
+        android:layout_marginBottom="41dp"
         android:scaleX="5"
         android:scaleY="5"
         android:text="Sign Up"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:textColor="@color/back"
+        app:layout_constraintBottom_toTopOf="@+id/e"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView2"
@@ -48,7 +48,8 @@
         android:id="@+id/p"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="19dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
         android:ems="10"
         android:inputType="textPassword"
         app:layout_constraintStart_toStartOf="@+id/e"
@@ -93,14 +94,14 @@
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="27dp"
+        android:layout_marginStart="45dp"
         android:layout_marginBottom="11dp"
         android:scaleX="2"
         android:scaleY="2"
         android:text="Phone No.:"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/pn"
-        app:layout_constraintEnd_toStartOf="@+id/pn" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/pn"
@@ -117,23 +118,36 @@
         android:id="@+id/signup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="14dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="62dp"
         android:background="@null"
         android:backgroundTint="@color/back"
         android:text="Sign Up"
-        app:layout_constraintBottom_toTopOf="@+id/already"
-        app:layout_constraintStart_toStartOf="@+id/already" />
+        app:layout_constraintStart_toStartOf="@+id/pn"
+        app:layout_constraintTop_toBottomOf="@+id/pn" />
 
     <TextView
         android:id="@+id/already"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="186dp"
+        android:layout_marginTop="14dp"
         android:text="Already a user?\nLog in."
         android:textColor="@color/back"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/signup"
+        app:layout_constraintTop_toBottomOf="@+id/signup" />
+
+    <ProgressBar
+        android:id="@+id/progressBar3"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="40sp"
+        android:layout_marginTop="26dp"
+        android:layout_marginBottom="40dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

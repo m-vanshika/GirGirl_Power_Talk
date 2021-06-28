@@ -56,6 +56,7 @@ public class userpage extends AppCompatActivity {
         allEds= new ArrayList<EditText>();
         ques=new ArrayList<String>();
         det=new ArrayList<String>();
+        fStore=FirebaseFirestore.getInstance();
         final DocumentReference documentReference=fStore.collection("questions").document("Details");
         documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
 
