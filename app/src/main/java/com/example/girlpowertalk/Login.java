@@ -31,12 +31,14 @@ public class Login extends AppCompatActivity {
     TextView t,forg;
     Button b;
     FirebaseAuth firebaseAuth;
+    ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         forg=(TextView)findViewById(R.id.textView12);
         email=(EditText)findViewById(R.id.editText);
+        progressBar=findViewById(R.id.progressBar);
         password=(EditText)findViewById(R.id.editText2);
         t=(TextView)findViewById(R.id.textView3);
         b=(Button)findViewById(R.id.button);
@@ -71,6 +73,7 @@ public class Login extends AppCompatActivity {
                     password.setError("MUST BE GREATER THAN 6");
                     return;
                 }
+                progressBar.setVisibility(View.VISIBLE);
                 firebaseAuth.signInWithEmailAndPassword(e,p).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -83,6 +86,8 @@ public class Login extends AppCompatActivity {
 
                         }
                         else{
+
+                            progressBar.setVisibility(View.GONE);
                             Toast.makeText(Login.this,"ERROR:"+task.getException().getMessage(),Toast.LENGTH_SHORT).show();
 
                         }
