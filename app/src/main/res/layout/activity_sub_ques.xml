@@ -9,9 +9,8 @@
 
     <ScrollView
         android:id="@+id/scrollView6"
-        android:layout_width="378dp"
-        android:layout_height="640dp"
-        android:layout_marginTop="44dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:foregroundGravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.515"
@@ -22,12 +21,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/textView18"
                 android:layout_width="match_parent"
-                android:layout_height="102dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:foregroundGravity="center"
                 android:gravity="center"
@@ -37,23 +38,33 @@
                 android:textStyle="bold|italic"
                 android:translationY="20sp" />
 
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <Space android:layout_height="20sp" />
+            </TableRow>
+
             <TextView
                 android:id="@+id/textView19"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="Click on candidate name to see responses." />
 
             <ScrollView
                 android:id="@+id/sv"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal">
 
                 <LinearLayout
                     android:id="@+id/ll"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical" />
+                    android:orientation="vertical">
+
+                </LinearLayout>
             </ScrollView>
         </LinearLayout>
     </ScrollView>

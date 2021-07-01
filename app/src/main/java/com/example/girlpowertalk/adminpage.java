@@ -28,6 +28,8 @@ FirebaseFirestore fStore;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_adminpage);
 
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.mipmap.logo1_round);
 
     }
     public void changeq(View view)

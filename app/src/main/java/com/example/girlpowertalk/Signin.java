@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -48,11 +49,17 @@ public class Signin extends AppCompatActivity {
         password = (EditText) findViewById(R.id.p);
         sign = (Button) findViewById(R.id.signup);
         t=(TextView) findViewById(R.id.already);
+        GradientDrawable gd = new GradientDrawable();
+// Set the gradient drawable background to transparent
+        gd.setColor(Color.parseColor("#fafafa"));
+        // gd.setStroke(2,Color.parseColor("#cc0c0c"));
+
+// Finally, apply the gradient drawable to the edit text background
+        email.setBackground(gd);
+        name.setBackground(gd);
+        password.setBackground(gd);
+        number.setBackground(gd);
         firebaseAuth = FirebaseAuth.getInstance();
-        ActionBar actionBar;
-        actionBar = getSupportActionBar();
-        ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor("#cc0c0c"));
-        actionBar.setBackgroundDrawable(colorDrawable);
 
         sign.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,6 +99,7 @@ public class Signin extends AppCompatActivity {
                     return;
                 }
                 progressBar.setVisibility(View.VISIBLE);
+                progressBar.setProgress(5);
                 firestore=FirebaseFirestore.getInstance();
                 firebaseAuth.createUserWithEmailAndPassword(e,p).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -99,26 +107,27 @@ public class Signin extends AppCompatActivity {
                         if(task.isSuccessful())
                         {
                             FirebaseUser fuser=firebaseAuth.getCurrentUser();
+                            progressBar.setProgress(25);
                           ///  Toast.makeText(Signin.this,"NOW LOGIN",Toast.LENGTH_SHORT).show();
                             userId=firebaseAuth.getCurrentUser().getUid();
                             DocumentReference documentReference=firestore.collection("users").document(userId);
                             Map<String,Object> user=new HashMap<>();
+                            progressBar.setProgress(50);
                             user.put("NAME",n);
                             user.put("EMAIL",e);
                             user.put("PHONE NUMBER",pn);
                             user.put("ADMIN",0);
                             user.put("response no",0);
                             user.put("status",0);
-
+                            progressBar.setProgress(75);
                             documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
                                     Toast.makeText(Signin.this,"DETAILS SAVED",Toast.LENGTH_LONG).show();
-
                                     FirebaseAuth.getInstance().signOut();
                                 }
                             });
-                            progressBar.setVisibility(View.GONE);
+                            progressBar.setProgress(100);
                             startActivity(new Intent(getApplicationContext(),Login.class));
                             finish();
 

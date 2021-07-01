@@ -17,8 +17,15 @@
     <style name="Theme.GirlPowerTalk.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-    </style>
 
+    </style>
+    <style name="MyActionBar"
+        parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+
+        <item name="android:icon">@drawable/logo</item>
+        <item name="logo">@drawable/logo</item>
+        <item name="displayOptions">useLogo|showHome|showTitle</item>
+    </style>
     <style name="Theme.GirlPowerTalk.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.GirlPowerTalk.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />

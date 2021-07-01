@@ -50,6 +50,8 @@ public class Hompage extends AppCompatActivity {
         progress.setVisibility(View.VISIBLE);
         fStore=FirebaseFirestore.getInstance();
         uid=fAuth.getCurrentUser().getUid();
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.mipmap.logo1_round);
        /* ActionBar actionBar;
         actionBar = getSupportActionBar();
         ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor("#cc0c0c"));
@@ -69,21 +71,28 @@ public class Hompage extends AppCompatActivity {
                         TextView t=findViewById(R.id.t);
                         t.setText("ADMIN PAGE");
                         TextView t1=findViewById(R.id.textView10);
-                        t1.setText("This is the page for login of admins\n\n");
+                        t1.setText("Hello Admin,\nWelcome to the admin page of Girl Power Talk.Press the login button to see various questions and submissions recieved.");
 
+                        button.setVisibility(View.VISIBLE);
                     }
                     else {
                         p=(documentSnapshot.getLong("response no").intValue());
                         TextView t=findViewById(R.id.t);
                         t.setText("ABOUT US");
+                        TextView r=findViewById(R.id.textView5);
                         TextView t1=findViewById(R.id.textView10);
-                        t1.setText("Girl Power Talk strives to inspire girls with persistence, empathy, and confidence. We empower young Women, Men & Non-Binary with merit-based opportunities to grow and achieve their full potential. Our mission, in collaboration with our sister company Blue Ocean Global Technology, is to develop girls in India to become global leaders. We are relentlessly committed to education, gender equality, and integrating the strengths of specially abled communities. We celebrate the diverse talents of each individual. \n Through our nurturing culture of learning and mentorship, we instill young people with exceptional soft-skills, technical knowledge, and purpose in life. We provide a platform to share the voices and stories of girls and women across India. #GirlPowerTalk \n “One girl empowers another. Let’s change lives together: one girl, one woman and one human being at a time.” \n \n -Rachita Sharma \n Co-Founder, Girl Power Talk \n Chief Marketing Officer, Blue Ocean Global Technology \n");
-
+                        TextView t2=findViewById(R.id.textView8);
+                        TextView t3=findViewById(R.id.textView7);
+                        t2.setText("#GirlPowerTalk \n");
+                        t1.setText("Girl Power Talk strives to inspire girls with persistence, empathy, and confidence. We empower young Women, Men & Non-Binary with merit-based opportunities to grow and achieve their full potential. Our mission, in collaboration with our sister company Blue Ocean Global Technology, is to develop girls in India to become global leaders. We are relentlessly committed to education, gender equality, and integrating the strengths of specially abled communities. We celebrate the diverse talents of each individual. \n Through our nurturing culture of learning and mentorship, we instill young people with exceptional soft-skills, technical knowledge, and purpose in life. We provide a platform to share the voices and stories of girls and women across India. ");
+                        t3.setText(" -Rachita Sharma \n Co-Founder, Girl Power Talk \n Chief Marketing Officer,\n Blue Ocean Global Technology \n");
+                        r.setText("“One girl empowers another. Let’s change lives together: one girl, one woman and one human being at a time.”\n");
                         if (p == 0)
                             button.setText("APPLY NOW");
                         else
                             button.setText("SEE PROGRESS");
                     }
+                    button.setVisibility(View.VISIBLE);
                     progress.setVisibility(View.INVISIBLE);
                 }
                 else
@@ -167,7 +176,8 @@ public class Hompage extends AppCompatActivity {
         final DocumentReference documentReference=fStore.collection("users").document(uid);
         documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+            public void
+            onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()){
                     DocumentSnapshot documentSnapshot=task.getResult();
                     assert documentSnapshot != null;
@@ -178,15 +188,21 @@ public class Hompage extends AppCompatActivity {
                         TextView t=findViewById(R.id.t);
                         t.setText("ADMIN PAGE");
                         TextView t1=findViewById(R.id.textView10);
-                        t1.setText("This is the page for login of admins\n\n");
+                        t1.setText("Hello Admin,\nWelcome to the admin page of Girl Power Talk.Press the login button to see various questions and submissions recieved.");
 
                     }
                     else {
                         p=(documentSnapshot.getLong("response no").intValue());
                         TextView t=findViewById(R.id.t);
                         t.setText("ABOUT US");
+                        TextView r=findViewById(R.id.textView5);
                         TextView t1=findViewById(R.id.textView10);
-                        t1.setText("Girl Power Talk strives to inspire girls with persistence, empathy, and confidence. We empower young Women, Men & Non-Binary with merit-based opportunities to grow and achieve their full potential. Our mission, in collaboration with our sister company Blue Ocean Global Technology, is to develop girls in India to become global leaders. We are relentlessly committed to education, gender equality, and integrating the strengths of specially abled communities. We celebrate the diverse talents of each individual. \n Through our nurturing culture of learning and mentorship, we instill young people with exceptional soft-skills, technical knowledge, and purpose in life. We provide a platform to share the voices and stories of girls and women across India. #GirlPowerTalk \n “One girl empowers another. Let’s change lives together: one girl, one woman and one human being at a time.” \n \n -Rachita Sharma \n Co-Founder, Girl Power Talk \n Chief Marketing Officer, Blue Ocean Global Technology \n");
+                        TextView t2=findViewById(R.id.textView8);
+                        TextView t3=findViewById(R.id.textView7);
+                        t2.setText("\n#GirlPowerTalk ");
+                        t1.setText("Girl Power Talk strives to inspire girls with persistence, empathy, and confidence. We empower young Women, Men & Non-Binary with merit-based opportunities to grow and achieve their full potential. Our mission, in collaboration with our sister company Blue Ocean Global Technology, is to develop girls in India to become global leaders. We are relentlessly committed to education, gender equality, and integrating the strengths of specially abled communities. We celebrate the diverse talents of each individual. \n Through our nurturing culture of learning and mentorship, we instill young people with exceptional soft-skills, technical knowledge, and purpose in life. We provide a platform to share the voices and stories of girls and women across India. ");
+                        t3.setText(" -Rachita Sharma \n Co-Founder, Girl Power Talk \n Chief Marketing Officer,\n Blue Ocean Global Technology \n");
+                        r.setText("“One girl empowers another. Let’s change lives together: one girl, one woman and one human being at a time.”");
 
                         if (p == 0)
                             button.setText("APPLY NOW");

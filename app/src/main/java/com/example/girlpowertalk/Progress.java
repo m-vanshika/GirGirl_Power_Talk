@@ -46,6 +46,8 @@ public class Progress extends AppCompatActivity {
         progressBar=findViewById(R.id.progressBar4);
         progressBar.setVisibility(View.VISIBLE);
         t=(TextView)findViewById(R.id.textView15);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.mipmap.logo1_round);
         fAuth= FirebaseAuth.getInstance();
         fStore= FirebaseFirestore.getInstance();
         uid=fAuth.getCurrentUser().getUid();
@@ -66,15 +68,24 @@ public class Progress extends AppCompatActivity {
                             //Log.d("hey n","f"+n);
                             p=(documentSnapshot.getLong("status").intValue());
                             if(n!=0) {
-                                if (p == 1)
+                                if (p == 1) {
                                     t.setText("APPLICATION SUBMITTED");
-                                else if(p==2)
+                                    t.setBackgroundColor(Color.parseColor("#35a853"));
+                                }
+                                else if(p==2) {
                                     t.setText("APPLICATION UNDER EVALUATION");
-                                else if(p==3)
+                                    t.setBackgroundColor(Color.parseColor("#fbbc04"));
+                                }
+                                else if(p==3) {
                                     t.setText("SHORTLISTED FOR INTERVIEW");
-                                else if(p==4)
+                                    t.setBackgroundColor(Color.parseColor("#35a853"));
+                                }
+                                else if(p==4) {
                                     t.setText("REJECTED");
+                                    t.setBackgroundColor(Color.RED);
+                                }
                             }
+
                             progressBar.setVisibility(View.GONE);
 
                             // Log.d("jaa","c");
