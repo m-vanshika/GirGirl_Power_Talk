@@ -114,7 +114,7 @@ public class Hompage extends AppCompatActivity {
         else
         {
             if(p==0) {
-                Intent i = new Intent(Hompage.this, userpage.class);
+                Intent i = new Intent(Hompage.this, FirstForm.class);
                 startActivity(i);
             }
             else
