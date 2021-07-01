@@ -15,7 +15,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
@@ -35,18 +38,20 @@ public class JudgeQues extends AppCompatActivity {
     FirebaseFirestore fStore;
     DocumentReference documentReference3;
     FirebaseAuth fAuth;
-
+ProgressBar pr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_judge_ques);
-
+pr=findViewById(R.id.progressBar6);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.mipmap.logo1_round);
         String t= getIntent().getStringExtra("CANDIDATE NUMBER");
         fStore=FirebaseFirestore.getInstance();
+        pr.setVisibility(View.VISIBLE);
         documentReference3=fStore.collection("questions").document("Responses").collection("Answers").document("r"+t);
         documentReference3.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()){
@@ -84,12 +89,23 @@ public class JudgeQues extends AppCompatActivity {
                         t1.setTextSize(20);
                         t2.setTextSize(25);
                         q=i+". "+documentSnapshot.getString("q"+i);
-                        a="\t\t"+documentSnapshot.getString("a"+i)+"\n";
+                        GradientDrawable gd = new GradientDrawable();
+// gradient drawable background to transparent
+                        gd.setColor(Color.parseColor("#fafafa"));
+                        gd.setStroke(5,Color.parseColor("#f8f9fa"));
+                        FrameLayout.LayoutParams layoutParams =
+                                new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,150);
+                        layoutParams.setMargins(20, 20, 20, 20);
+                        t2.setLayoutParams(layoutParams);
+
+                        a=documentSnapshot.getString("a"+i);
                         t1.setText(q);
+                        t2.setBackground(gd);
                         t2.setText(a);
                         ll.addView(t1);
                         ll.addView(t2);
                     }
+                    pr.setVisibility(View.GONE);
                 }
                 else
                 {

@@ -9,11 +9,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,8 +41,18 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         forg=(TextView)findViewById(R.id.textView12);
         email=(EditText)findViewById(R.id.editText);
+        GradientDrawable gd = new GradientDrawable();
+// Set the gradient drawable background to transparent
+        gd.setColor(Color.parseColor("#fafafa"));
+       // gd.setStroke(2,Color.parseColor("#cc0c0c"));
+
+// Finally, apply the gradient drawable to the edit text background
+        email.setBackground(gd);
+
+        // e.setHeight();
         progressBar=findViewById(R.id.progressBar);
         password=(EditText)findViewById(R.id.editText2);
+        password.setBackground(gd);
         t=(TextView)findViewById(R.id.textView3);
         b=(Button)findViewById(R.id.button);
         firebaseAuth=FirebaseAuth.getInstance();
@@ -74,12 +87,16 @@ public class Login extends AppCompatActivity {
                     return;
                 }
                 progressBar.setVisibility(View.VISIBLE);
+                progressBar.setProgress(25);
                 firebaseAuth.signInWithEmailAndPassword(e,p).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
+                            progressBar.setProgress(50);
                             MainActivity.flag=false;
+                            progressBar.setProgress(75);
                             Toast.makeText(Login.this,"WELCOME TO Girl Power Talk",Toast.LENGTH_SHORT).show();
+                            progressBar.setProgress(100);
                             startActivity(new Intent(Login.this,Hompage.class));
                             finish();
 
@@ -110,6 +127,12 @@ public class Login extends AppCompatActivity {
                 passres.setTitle("Reset Password?");
                 passres.setMessage("Enter your E-mail to reset password.");
                 passres.setView(resetMail);
+
+                GradientDrawable gd = new GradientDrawable();
+// gradient drawable background to transparent
+                gd.setColor(Color.parseColor("#f8f9fa"));
+                resetMail.setBackground(gd);
+
                 passres.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

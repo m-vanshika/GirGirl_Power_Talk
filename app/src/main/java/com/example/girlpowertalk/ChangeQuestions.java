@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -46,6 +47,8 @@ public class ChangeQuestions extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_questions);
 
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.mipmap.logo1_round);
 
 
     }
@@ -88,8 +91,20 @@ public class ChangeQuestions extends AppCompatActivity {
     {
         final EditText nq=new EditText(v.getContext());
         AlertDialog.Builder passres=new AlertDialog.Builder(v.getContext());
-        passres.setTitle("ENTER NEW QUESTION");
+        TextView textView = new TextView(ChangeQuestions.this);
+        textView.setText("ENTER NEW QUESTION");
+        textView.setPadding(20, 30, 20, 30);
+        textView.setTextSize(20F);
+
+        textView.setTextColor(Color.parseColor("#cc0c0c"));
+
+        passres.setCustomTitle(textView);
         passres.setView(nq);
+        GradientDrawable gd = new GradientDrawable();
+// Set the gradient drawable background to transparent
+        gd.setColor(Color.parseColor("#f8f9fa"));
+
+        nq.setBackground(gd);
         passres.setPositiveButton("SAVE", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -200,7 +215,16 @@ public class ChangeQuestions extends AppCompatActivity {
             getq(nn,k);
         }
         AlertDialog.Builder passres=new AlertDialog.Builder(v.getContext());
-        passres.setTitle("EDIT QUESTION");
+        TextView textView = new TextView(ChangeQuestions.this);
+        textView.setText("EDIT QUESTION");
+        textView.setTextSize(20F);
+
+        textView.setTextColor(Color.parseColor("#cc0c0c"));
+        GradientDrawable gd = new GradientDrawable();
+        gd.setColor(Color.parseColor("#f8f9fa"));
+
+        nn.setBackground(gd);
+        passres.setCustomTitle(textView);
         passres.setMessage("QUESTION"+k);
         passres.setView(nn);
         passres.setPositiveButton("SAVE", new DialogInterface.OnClickListener() {

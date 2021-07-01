@@ -15,6 +15,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,6 +44,8 @@ public class SubQues extends AppCompatActivity {
         // Log.d("hey","itni bar");
         fStore=FirebaseFirestore.getInstance();
 
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.mipmap.logo1_round);
         //number of responses
         final DocumentReference documentReference=fStore.collection("questions").document("Responses");
 
@@ -85,8 +89,14 @@ public class SubQues extends AppCompatActivity {
 
 //  apply the gradient drawable to the edit text background
                                     textView.setBackground(gd);
+                                    textView.setPadding(20,20,20,20);
+                                    textView.setWidth(20);
                                     // e.setHeight();
                                     textView.setGravity(0);
+                                    FrameLayout.LayoutParams layoutParams =
+                                            new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,150);
+                                    layoutParams.setMargins(20, 20, 20, 20);
+                                    textView.setLayoutParams(layoutParams);
                                     ll.addView(textView);
                                     textView.setOnClickListener(new View.OnClickListener() {
                                         @Override

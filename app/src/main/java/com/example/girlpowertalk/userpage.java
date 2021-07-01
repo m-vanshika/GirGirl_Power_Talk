@@ -22,13 +22,16 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -47,21 +50,28 @@ public class userpage extends AppCompatActivity {
 
     FirebaseFirestore fStore;
     FirebaseAuth firebaseAuth,fAuth;
-    static int n,rn;
+    static int n,rn;ProgressBar p;
     static String uid,email,ph;
     public static String name="";
     List<EditText> allEds;
+    Button s;
     List<String> ques;
     List<String> det;
     DocumentReference documentReference2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_userpage);
+        p=findViewById(R.id.progressBar5);
+        s=findViewById(R.id.button3);
         allEds= new ArrayList<EditText>();
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.mipmap.logo1_round);
         ques=new ArrayList<String>();
         det=new ArrayList<String>();
         fStore=FirebaseFirestore.getInstance();
+        p.setVisibility(View.VISIBLE);
         final DocumentReference documentReference=fStore.collection("questions").document("Details");
         documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
 
@@ -89,6 +99,7 @@ public class userpage extends AppCompatActivity {
 
     public void display(int n,DocumentSnapshot documentSnapshot)
     {
+        p.setVisibility(View.VISIBLE);
         LinearLayout ll=findViewById(R.id.ll);
         if(n==0)
         {
@@ -106,6 +117,7 @@ public class userpage extends AppCompatActivity {
             TextView t=new TextView(userpage.this);
             t.setText(i+".  "+q);
             t.setTextColor(Color.BLACK);
+
             //  t.setTextScaleX(2);
             t.setTextSize(1,20);
             ll.addView(t);
@@ -113,7 +125,6 @@ public class userpage extends AppCompatActivity {
             GradientDrawable gd = new GradientDrawable();
 // Set the gradient drawable background to transparent
             gd.setColor(Color.parseColor("#f8f9fa"));
-            gd.setStroke(2,Color.BLACK);
 
 // Finally, apply the gradient drawable to the edit text background
             e.setBackground(gd);
@@ -121,10 +132,13 @@ public class userpage extends AppCompatActivity {
             e.setGravity(0);
             allEds.add(e);
             e.setId(i);
+            e.setHint("Write your answer here");
 
             ll.addView(e);
 
         }
+        s.setVisibility(View.VISIBLE);
+        p.setVisibility(View.GONE);
     }
    /* public int getWifiLevel()
     {
@@ -141,82 +155,99 @@ public class userpage extends AppCompatActivity {
     }
     public void submit(View view)
     {
-boolean t=isOnline();
-      //  Toast.makeText(userpage.this,""+t,Toast.LENGTH_LONG).show();
-if(false==t)
-{
-    Toast.makeText(userpage.this,"NETWORK FAILURE",Toast.LENGTH_LONG).show();
-    return;
-}
-        String strings[] = new String[allEds.size()];
 
-        for(int i=0; i < allEds.size(); i++){
-            strings[i] = allEds.get(i).getText().toString();
-        }
-        fStore=FirebaseFirestore.getInstance();
-        //got response no
-        final DocumentReference documentReference=fStore.collection("questions").document("Responses");
-        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-
+        AlertDialog.Builder passres=new AlertDialog.Builder(view.getContext());
+        passres.setTitle("Are you sure?");
+        passres.setMessage("Once submitted you cannot edit it.");
+        passres.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
-                    DocumentSnapshot documentSnapshot=task.getResult();
-                    assert documentSnapshot != null;
-                    rn =(documentSnapshot.getLong("number").intValue());
-                    // Log.v("number", String.valueOf(rn));
-                    rn++;
-                    Map<String, Object> data = new HashMap<>();
-                    data.put("number", rn);
-                    documentReference.set(data, SetOptions.merge());
-                    //added response number to user
-                    firebaseAuth=FirebaseAuth.getInstance();
-                    uid= Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
-                    documentReference2=fStore.collection("users").document(uid);
-                    readData(new FirestoreCallback() {
-                        @Override
-                        public void onCallback(List<String> list) {
-                            name=list.get(0);
-                            email=list.get(1);
-                            ph=list.get(2);
-                            DocumentReference documentReference3=fStore.collection("questions").document("Responses").collection("Answers").document("r"+rn);
-                            Map<String,Object> user=new HashMap<>();
-                            user.put("NAME",name);
-                            user.put("EMAIL",email);
-                            user.put("PHONE NUMBER",ph);
-                            for(int i=0; i < allEds.size(); i++){
-                                user.put("a"+(i+1),strings[i]);
-                                user.put("q"+(i+1),ques.get(i));
-                            }
+            public void onClick(DialogInterface dialog, int which) {
 
-                            user.put("progress",1);
-                            user.put("total",allEds.size());
+                boolean t=isOnline();
+                //  Toast.makeText(userpage.this,""+t,Toast.LENGTH_LONG).show();
+                if(false==t)
+                {
+                    Toast.makeText(userpage.this,"NETWORK FAILURE",Toast.LENGTH_LONG).show();
+                    return;
+                }
+                String strings[] = new String[allEds.size()];
 
-                            documentReference3.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                for(int i=0; i < allEds.size(); i++){
+                    strings[i] = allEds.get(i).getText().toString();
+                }
+                fStore=FirebaseFirestore.getInstance();
+                //got response no
+                final DocumentReference documentReference=fStore.collection("questions").document("Responses");
+                documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()){
+                            DocumentSnapshot documentSnapshot=task.getResult();
+                            assert documentSnapshot != null;
+                            rn =(documentSnapshot.getLong("number").intValue());
+                            // Log.v("number", String.valueOf(rn));
+                            rn++;
+                            Map<String, Object> data = new HashMap<>();
+                            data.put("number", rn);
+                            documentReference.set(data, SetOptions.merge());
+                            //added response number to user
+                            firebaseAuth=FirebaseAuth.getInstance();
+                            uid= Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
+                            documentReference2=fStore.collection("users").document(uid);
+                            readData(new FirestoreCallback() {
                                 @Override
-                                public void onSuccess(Void aVoid) {
-                                    Toast.makeText(userpage.this,"SUBMISSION DONE",Toast.LENGTH_LONG).show();
+                                public void onCallback(List<String> list) {
+                                    name=list.get(0);
+                                    email=list.get(2);
+                                    ph=list.get(1);
+                                    DocumentReference documentReference3=fStore.collection("questions").document("Responses").collection("Answers").document("r"+rn);
+                                    Map<String,Object> user=new HashMap<>();
+                                    user.put("NAME",name);
+                                    user.put("EMAIL",email);
+                                    user.put("PHONE NUMBER",ph);
+                                    for(int i=0; i < allEds.size(); i++){
+                                        user.put("a"+(i+1),strings[i]);
+                                        user.put("q"+(i+1),ques.get(i));
+                                    }
+
+                                    user.put("progress",1);
+                                    user.put("total",allEds.size());
+
+                                    documentReference3.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Toast.makeText(userpage.this,"SUBMISSION DONE",Toast.LENGTH_LONG).show();
+                                        }
+                                    });
                                 }
                             });
+                            Map<String, Object> data2 = new HashMap<>();
+                            data2.put("response no", rn);
+                            documentReference2.set(data2, SetOptions.merge());
+                            startActivity(new Intent(getApplicationContext(),Progress.class));
+                            finish();
                         }
-                    });
-                    Map<String, Object> data2 = new HashMap<>();
-                    data2.put("response no", rn);
-                    documentReference2.set(data2, SetOptions.merge());
-                    startActivity(new Intent(getApplicationContext(),Progress.class));
-                    finish();
-                }
-                else
-                {
-                    Toast.makeText(userpage.this,task.getException().getMessage(),Toast.LENGTH_LONG);
+                        else
+                        {
+                            Toast.makeText(userpage.this,task.getException().getMessage(),Toast.LENGTH_LONG);
 
-                }
+                        }
+
+                    }
+                });
+
+
 
             }
         });
-
-
-
+        passres.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //close dialog
+            }
+        });
+        passres.create().show();
     }
     private void readData(FirestoreCallback firestoreCallback)
     {
