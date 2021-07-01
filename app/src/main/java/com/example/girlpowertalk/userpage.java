@@ -198,14 +198,9 @@ public class userpage extends AppCompatActivity {
                             readData(new FirestoreCallback() {
                                 @Override
                                 public void onCallback(List<String> list) {
-                                    name=list.get(0);
-                                    email=list.get(2);
-                                    ph=list.get(1);
                                     DocumentReference documentReference3=fStore.collection("questions").document("Responses").collection("Answers").document("r"+rn);
                                     Map<String,Object> user=new HashMap<>();
-                                    user.put("NAME",name);
-                                    user.put("EMAIL",email);
-                                    user.put("PHONE NUMBER",ph);
+
                                     for(int i=0; i < allEds.size(); i++){
                                         user.put("a"+(i+1),strings[i]);
                                         user.put("q"+(i+1),ques.get(i));
@@ -214,7 +209,7 @@ public class userpage extends AppCompatActivity {
                                     user.put("progress",1);
                                     user.put("total",allEds.size());
 
-                                    documentReference3.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    documentReference3.set(user,SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
                                             Toast.makeText(userpage.this,"SUBMISSION DONE",Toast.LENGTH_LONG).show();
@@ -269,53 +264,5 @@ public class userpage extends AppCompatActivity {
     }
 
 
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-       // Log.d("hey0","hey");
-        return true;
-    }
-    public boolean onOptionsItemSelected(final MenuItem item) {
-        // Handle presses on the action bar items
-
-        fAuth=FirebaseAuth.getInstance();
-        fStore=FirebaseFirestore.getInstance();
-        switch (item.getItemId()) {
-
-            case R.id.logout:
-
-                AlertDialog.Builder l=new AlertDialog.Builder(userpage.this);
-                l.setTitle("Logout!");
-                l.setMessage("Are you sure?");
-                l.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        FirebaseAuth.getInstance().signOut();
-                        MainActivity.flag=true;
-                        startActivity(new Intent(getApplicationContext(),Login.class));
-                        finish();
-
-                    }
-                });
-                l.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //exits
-                    }
-                });
-                l.create().show();
-
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if(MainActivity.flag==true)
-            finish();
-    }
 }
 

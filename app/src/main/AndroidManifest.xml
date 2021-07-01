@@ -10,7 +10,7 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.GirlPowerTalk">
-        <activity android:name=".FirstForm"></activity>
+        <activity android:name=".FirstForm" />
         <activity
             android:name=".JudgeQues"
             android:launchMode="singleTop" />

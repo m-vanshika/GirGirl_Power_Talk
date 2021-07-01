@@ -73,7 +73,7 @@ public class SubQues extends AppCompatActivity {
                                     assert documentSnapshot != null;
                                     String name =(documentSnapshot.getString("NAME"));
                                     //    Log.d("hey ", "hum first"+name);
-                                    String email=(documentSnapshot.getString("EMAIL"));
+                                    String email=(documentSnapshot.getString("EMAIL:"));
                                     String ph=(documentSnapshot.getString("PHONE NUMBER"));
                                     int prog=(documentSnapshot.getLong("progress")).intValue();
                                     if(prog==4) {
