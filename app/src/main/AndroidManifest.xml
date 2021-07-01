@@ -5,28 +5,37 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/logo1_round"
-        android:logo="@drawable/logo"
         android:label="@string/app_name"
+        android:logo="@drawable/logo"
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.GirlPowerTalk">
-        <activity android:name=".JudgeQues"
-            android:launchMode = "singleTop"/>
-        <activity android:name=".SubQues"
-            android:launchMode = "singleTop"/>
-        <activity android:name=".ChangeQuestions"
-            android:launchMode = "singleTop"/>
-        <activity android:name=".Progress"
-            android:launchMode = "singleTop"/>
-        <activity android:name=".userpage"
-            android:launchMode = "singleTop"/>
-        <activity android:name=".adminpage"
-            android:launchMode = "singleTop"/>
-        <activity android:name=".Signin"
-            android:theme="@style/Theme.GirlPowerTalk.NoActionBar"
-            android:launchMode = "singleTop"/>
-        <activity android:name=".Hompage"
-            android:launchMode = "singleTop"/>
+        <activity android:name=".FirstForm"></activity>
+        <activity
+            android:name=".JudgeQues"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".SubQues"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".ChangeQuestions"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".Progress"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".userpage"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".adminpage"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".Signin"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.GirlPowerTalk.NoActionBar" />
+        <activity
+            android:name=".Hompage"
+            android:launchMode="singleTop" />
         <activity
             android:name=".Login"
             android:label="@string/title_activity_login"
