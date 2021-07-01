@@ -73,7 +73,7 @@ public class SubQues extends AppCompatActivity {
                                     assert documentSnapshot != null;
                                     String name =(documentSnapshot.getString("NAME"));
                                     //    Log.d("hey ", "hum first"+name);
-                                    String email=(documentSnapshot.getString("EMAIL:"));
+                                    String email=(documentSnapshot.getString("EMAIL"));
                                     String ph=(documentSnapshot.getString("PHONE NUMBER"));
                                     int prog=(documentSnapshot.getLong("progress")).intValue();
                                     if(prog==4) {
@@ -81,7 +81,7 @@ public class SubQues extends AppCompatActivity {
                                     }
                                     TextView textView=new TextView(SubQues.this);
                                     textView.setTextColor(Color.BLACK);
-                                    textView.setText("\tNAME:"+name+"\n\tE-Mail"+email+"\n\tPhone number:"+ph);
+                                    textView.setText("\tNAME:"+name+"\n\tE-Mail:"+email+"\n\tPhone number:"+ph);
                                     GradientDrawable gd = new GradientDrawable();
 // gradient drawable background to transparent
                                     gd.setColor(Color.parseColor("#f8f9fa"));

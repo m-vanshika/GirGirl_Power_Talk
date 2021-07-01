@@ -56,6 +56,7 @@ public class userpage extends AppCompatActivity {
     List<EditText> allEds;
     Button s;
     List<String> ques;
+    public static boolean flag=false;
     List<String> det;
     DocumentReference documentReference2;
     @Override
@@ -220,6 +221,7 @@ public class userpage extends AppCompatActivity {
                             Map<String, Object> data2 = new HashMap<>();
                             data2.put("response no", rn);
                             documentReference2.set(data2, SetOptions.merge());
+                            flag=true;
                             startActivity(new Intent(getApplicationContext(),Progress.class));
                             finish();
                         }
